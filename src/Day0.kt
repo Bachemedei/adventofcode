@@ -9,7 +9,11 @@ fun main() {
         return 0
     }
 
-    val input = readInput("Day02")
+    val testInput = readInput("Day0_test")
+    println(part1(testInput) == 0)
+    println(part2(testInput) == 0)
+
+    val input = readInput("Day0")
     println(part1(input))
     println(part2(input))
 }

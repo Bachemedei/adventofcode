@@ -1,3 +1,7 @@
+package week1
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         var count = 0
@@ -21,11 +25,7 @@ fun main() {
         return count
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-//    check(part1(testInput) == 1)
-
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    val input = readInput("src/week1", "Day01")
+    println("Part 1 answer: ${part1(input)}")
+    println("Part 2 answer: ${part2(input)}")
 }

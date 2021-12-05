@@ -1,3 +1,7 @@
+package week1
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         val coordinateList = input
@@ -27,13 +31,13 @@ fun main() {
     }
 
     // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day05_test")
-    println(part1(testInput) == 5)
-    println(part2(testInput) == 12)
+    val testInput = readInput("src/week1", "Day05_test")
+    println("Part 1 test " + if (part1(testInput) == 5) "passed" else "failed")
+    println("Part 2 test " + if (part2(testInput) == 12) "passed" else "failed")
 
-    val input = readInput("Day05")
-    println(part1(input))
-    println(part2(input))
+    val input = readInput("src/week1", "Day05")
+    println("Part 1 answer: ${part1(input)}")
+    println("Part 2 answer: ${part2(input)}")
 }
 
 data class Coordinates private constructor(

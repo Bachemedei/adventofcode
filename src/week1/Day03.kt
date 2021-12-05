@@ -1,3 +1,7 @@
+package week1
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         val sums = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -34,9 +38,9 @@ fun main() {
         return o2.getDecimalMeasurement() * co2.getDecimalMeasurement()
     }
 
-    val input = readInput("Day03")
-    println(part1(input))
-    println(part2(input))
+    val input = readInput("src/week1", "Day03")
+    println("Part 1 answer: ${part1(input)}")
+    println("Part 2 answer: ${part2(input)}")
 }
 
 data class Measurement constructor(

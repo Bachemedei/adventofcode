@@ -1,3 +1,7 @@
+package week1
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>) {
         val numbers = input[0].split(",").map { it.toInt() }
@@ -32,7 +36,7 @@ fun main() {
         println("part 2: $losingScore")
     }
 
-    val input = readInput("Day04")
+    val input = readInput("src/week1", "Day04")
     part1(input)
 }
 
@@ -124,10 +128,6 @@ sealed class BoardNumbers(private val numbers: List<Int>) {
             }
         }
         return if (found == numbers.size) position else null
-    }
-
-    fun getSummedValue(): Int {
-       return numbers.sum()
     }
 }
 
