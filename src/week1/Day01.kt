@@ -15,7 +15,7 @@ fun main() {
         var count = 0
         val numberInputs = mutableListOf<Int>()
         input.forEach { numberInputs.add(it.toInt()) }
-        numberInputs.forEachIndexed { index, it ->
+        numberInputs.forEachIndexed { index, _ ->
             if (index <= (numberInputs.lastIndex - 3)) {
                 val windowOne = numberInputs[index] + numberInputs[index + 1] + numberInputs[index + 2]
                 val windowTwo = numberInputs[index + 1] + numberInputs[index + 2] + numberInputs[index + 3]

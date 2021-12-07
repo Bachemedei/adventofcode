@@ -7,27 +7,17 @@ fun main() {
         val coordinateList = input
             .map { Coordinates(it.split(" -> ")) }
             .filter { it.pointOne.x == it.pointTwo.x || it.pointOne.y == it.pointTwo.y }
-        val grid = MutableList(1000) {MutableList(1000) {0} }
-        val allLines = coordinateList.map { it.getLine() }.flatten()
-        allLines.forEach { grid[it.y][it.x] += 1 }
-        var matches = 0
-        grid.forEach { it.forEach { point ->
-            if (point > 1) matches++ }
-        }
-        return matches
+        val grid = GridMap()
+        coordinateList.forEach { it.drawLine(grid) }
+        return grid.countCrossingLines()
     }
 
     fun part2(input: List<String>): Int {
         val coordinateList = input
             .map { Coordinates(it.split(" -> ")) }
-        val grid = MutableList(1000) {MutableList(1000) {0} }
-        val allLines = coordinateList.map { it.getLine() }.flatten()
-        allLines.forEach { grid[it.y][it.x] += 1 }
-        var matches = 0
-        grid.forEach { it.forEach { point ->
-            if (point > 1) matches++ }
-        }
-        return matches
+        val grid = GridMap()
+        coordinateList.forEach { it.drawLine(grid) }
+        return grid.countCrossingLines()
     }
 
     // test if implementation meets criteria from the description, like:
@@ -40,7 +30,7 @@ fun main() {
     println("Part 2 answer: ${part2(input)}")
 }
 
-data class Coordinates private constructor(
+data class Coordinates constructor(
     val pointOne: Coordinate,
     val pointTwo: Coordinate
 ) {
@@ -54,24 +44,24 @@ data class Coordinates private constructor(
             input[1].split(",")[1].toInt(),
         ),
     )
-    fun getLine(): List<Coordinate> {
-        val list = mutableListOf<Coordinate>()
+
+    fun drawLine(grid: GridMap) {
         when {
-            pointOne.x == pointTwo.x -> {
-                var smallerY = if (pointOne.y < pointTwo.y) pointOne.y else pointTwo.y
-                var largerY = if (pointOne.y > pointTwo.y) pointOne.y else pointTwo.y
+            pointOne.y == pointTwo.y -> {
+                val smallerY = if (pointOne.y < pointTwo.y) pointOne.y else pointTwo.y
+                val largerY = if (pointOne.y > pointTwo.y) pointOne.y else pointTwo.y
                 var i = smallerY
                 while (i <= largerY) {
-                    list.add(Coordinate(pointOne.x, i))
+                    grid.addPoint(Coordinate(pointOne.x, i))
                     i++
                 }
             }
-            pointOne.y == pointTwo.y -> {
-                var smallerX = if (pointOne.x < pointTwo.x) pointOne.x else pointTwo.x
-                var largerX = if (pointOne.x > pointTwo.x) pointOne.x else pointTwo.x
+            pointOne.x == pointTwo.x -> {
+                val smallerX = if (pointOne.x < pointTwo.x) pointOne.x else pointTwo.x
+                val largerX = if (pointOne.x > pointTwo.x) pointOne.x else pointTwo.x
                 var i = smallerX
                 while (i <= largerX) {
-                    list.add(Coordinate(i, pointOne.y))
+                    grid.addPoint(Coordinate(i, pointOne.y))
                     i++
                 }
             }
@@ -81,7 +71,7 @@ data class Coordinates private constructor(
                         var x = pointOne.x
                         var y = pointOne.y
                         while (x <= pointTwo.x) {
-                            list.add(Coordinate(x, y))
+                            grid.addPoint(Coordinate(x, y))
                             x++
                             y++
                         }
@@ -90,7 +80,7 @@ data class Coordinates private constructor(
                         var x = pointTwo.x
                         var y = pointTwo.y
                         while (x <= pointOne.x) {
-                            list.add(Coordinate(x, y))
+                            grid.addPoint(Coordinate(x, y))
                             x++
                             y++
                         }
@@ -99,7 +89,7 @@ data class Coordinates private constructor(
                         var x = pointTwo.x
                         var y = pointTwo.y
                         while (x <= pointOne.x) {
-                            list.add(Coordinate(x, y))
+                            grid.addPoint(Coordinate(x, y))
                             x++
                             y--
                         }
@@ -108,7 +98,7 @@ data class Coordinates private constructor(
                         var x = pointOne.x
                         var y = pointOne.y
                         while (x <= pointTwo.x) {
-                            list.add(Coordinate(x, y))
+                            grid.addPoint(Coordinate(x, y))
                             x++
                             y--
                         }
@@ -116,8 +106,20 @@ data class Coordinates private constructor(
                 }
             }
         }
-        return list
     }
 }
 
+data class GridMap(val grid: MutableList<MutableList<Int>> = MutableList(1000) {MutableList(1000) {0} }) {
+    fun addPoint(point: Coordinate) {
+        grid[point.y][point.x] += 1
+    }
+
+    fun countCrossingLines(): Int {
+        var crossingLines = 0
+        grid.forEach { it.forEach { point ->
+            if (point > 1) crossingLines++ }
+        }
+        return crossingLines
+    }
+}
 data class Coordinate(val x: Int, val y: Int)

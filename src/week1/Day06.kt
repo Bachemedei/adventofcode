@@ -10,8 +10,7 @@ fun main() {
            school = school.oneDayLater()
             i++
         }
-        val schoolSize = school.getSchoolSize()
-        return schoolSize
+        return school.getSchoolSize()
     }
 
     fun part2(input: List<String>): Long {
@@ -46,30 +45,36 @@ fun getFish(input: List<String>): List<Fish> {
 }
 
 class School2 {
-    private val fish: HashMap<Int, Long> = HashMap(8)
+    private val fishies: HashMap<Int, Long> = HashMap(8)
+
+    init {
+        var i = 0
+        while (i < 9) {
+            fishies[i] = 0
+            i ++
+        }
+    }
 
     fun addInitialFish(fishInput: List<Int>) {
         fishInput.forEach {
-            val currentCount = fish[it]
-            fish[it] = (currentCount ?: 0).plus(1)
+            val currentCount = fishies[it]
+            fishies[it] = (currentCount ?: 0).plus(1)
         }
     }
 
     fun procreate() {
-        val reproduced = fish[0] ?: 0
-        fish[0] = fish[1] ?: 0
-        fish[1] = fish[2] ?: 0
-        fish[2] = fish[3] ?: 0
-        fish[3] = fish[4] ?: 0
-        fish[4] = fish[5] ?: 0
-        fish[5] = fish[6] ?: 0
-        fish[6] = (fish[7] ?: 0) + reproduced
-        fish[7] = fish[8] ?: 0
-        fish[8] = reproduced
+        val reproduced = fishies[0] ?: 0
+        for (fish in fishies) {
+            when (fish.key) {
+                6 -> fishies[fish.key] = (fishies[7] ?: 0) + reproduced
+                8 -> fishies[fish.key] = reproduced
+                else -> fishies[fish.key] = fishies[fish.key + 1] ?: 0
+            }
+        }
     }
 
     fun getSchoolSize(): Long {
-        return fish.values.sum()
+        return fishies.values.sum()
     }
 }
 
@@ -107,3 +112,5 @@ data class Fish(var timer: Int = 8) {
         return Fish()
     }
 }
+
+

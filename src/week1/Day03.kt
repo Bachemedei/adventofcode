@@ -7,7 +7,7 @@ fun main() {
         val sums = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         val gammaList = mutableListOf<Int>()
         val epsilonList = mutableListOf<Int>()
-        input.forEach { it.forEachIndexed { index, it -> sums[index] += Character.getNumericValue(it) } }
+        input.forEach { it.forEachIndexed { index, value -> sums[index] += Character.getNumericValue(value) } }
         sums.forEach {
             if (it > (input.size / 2)) {
                 gammaList.add(1)
@@ -52,7 +52,7 @@ data class Measurement constructor(
         return if (ones >= zeros) Bits.One else Bits.Zero
     }
 
-    fun getLeastCommonBit(): Bits {
+    private fun getLeastCommonBit(): Bits {
         return if (zeros <= ones) Bits.Zero else Bits.One
     }
 

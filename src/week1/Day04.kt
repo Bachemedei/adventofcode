@@ -21,14 +21,14 @@ fun main() {
         var winner: Board? = null
         var loser: Board? = null
         boards.forEach {
-            if (it.winningPosition != null) {
+            if (it.winningPosition != -1) {
                 when {
-                    winner == null || it.winningPosition!! < winner!!.winningPosition!! -> winner = it
-                    loser == null || it.winningPosition!! > loser!!.winningPosition!! -> loser = it
+                    winner == null || it.winningPosition < winner!!.winningPosition -> winner = it
+                    loser == null || it.winningPosition > loser!!.winningPosition -> loser = it
                 }
             }
         }
-        if (winner == null) return
+        if (winner == null || loser == null) return
 
         val winningScore = winner!!.getWinningScore(numbers)
         val losingScore = loser!!.getWinningScore(numbers)
@@ -41,44 +41,41 @@ fun main() {
 }
 
 data class Board(val id: Int) {
-    val rows = mutableListOf<Row>()
-    val columns = mutableListOf<Column>()
-    var winningPosition: Int? = null
-    var winningNumbers: BoardNumbers? = null
+    private val rows = mutableListOf<Row>()
+    private val columns = mutableListOf<Column>()
+    var winningPosition: Int = -1
 
-    fun getWinningScore(numbers: List<Int>): Int? {
-        if (winningNumbers == null || winningPosition == null) return null
+    fun getWinningScore(numbers: List<Int>): Int {
+        if (winningPosition == -1) return -1
 
-        val sublist = numbers.subList(0, winningPosition!! + 1)
+        val sublist = numbers.subList(0, winningPosition + 1)
         val remainingNumbers = rows.map { it.rowNumbers.filterNot { number -> sublist.contains(number) } }
         var totalSum = 0
         remainingNumbers.forEach { totalSum += it.sum() }
-        return totalSum * numbers[winningPosition!!]
+        return totalSum * numbers[winningPosition]
     }
 
     fun checkForBingo(numbers: List<Int>) {
         rows.forEach {
             val position = it.checkForNumbers(numbers)
-            updatePositionIfWon(position, it)
+            updatePositionIfWon(position)
         }
         columns.forEach {
             val position = it.checkForNumbers(numbers)
-            updatePositionIfWon(position, it)
+            updatePositionIfWon(position)
         }
     }
 
-    private fun updatePositionIfWon(newPosition: Int?, numbers: BoardNumbers) {
+    private fun updatePositionIfWon(newPosition: Int?) {
         if (newPosition == null) return
         when {
-            winningPosition == null -> {
+            winningPosition == -1 -> {
                 println("$newPosition, $id")
                 winningPosition = newPosition
-                winningNumbers = numbers
             }
-            newPosition < winningPosition!! -> {
+            newPosition < winningPosition -> {
                 println("$newPosition, $id")
                 winningPosition = newPosition
-                winningNumbers = numbers
             }
         }
     }
@@ -117,9 +114,9 @@ data class Board(val id: Int) {
 }
 
 sealed class BoardNumbers(private val numbers: List<Int>) {
-    fun checkForNumbers(winningNumbers: List<Int>): Int? {
-        var found: Int = 0
-        var position: Int = 0
+    fun checkForNumbers(winningNumbers: List<Int>): Int {
+        var found = 0
+        var position = 0
         numbers.forEach {
             if (winningNumbers.contains(it)) {
                 found++
@@ -127,7 +124,7 @@ sealed class BoardNumbers(private val numbers: List<Int>) {
                 if (winningIndex > position) position = winningIndex
             }
         }
-        return if (found == numbers.size) position else null
+        return if (found == numbers.size) position else -1
     }
 }
 
