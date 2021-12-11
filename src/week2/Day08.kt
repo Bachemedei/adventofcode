@@ -34,20 +34,20 @@ fun determineNumber(input: String): Int {
     val zeroSixNine = sequence.filter { it.length == 6 }
 
 
-    val one = sequence.filter { it.length == 2 }[0].toSortedSet()
-    val four = sequence.filter { it.length == 4 }[0].toSortedSet()
-    val seven = sequence.filter { it.length == 3 }[0].toSortedSet()
-    val eight = sequence.filter { it.length == 7 }[0].toSortedSet()
+    val one = sequence.filter { it.length == 2 }[0].toSet()
+    val four = sequence.filter { it.length == 4 }[0].toSet()
+    val seven = sequence.filter { it.length == 3 }[0].toSet()
+    val eight = sequence.filter { it.length == 7 }[0].toSet()
 
 
-    val six = zeroSixNine.filter { it.toList().intersect(one).size == 1 }[0].toSortedSet()
-    val nine = zeroSixNine.filter { it.toList().intersect(four).size == 4 }[0].toSortedSet()
-    val zero = zeroSixNine.filterNot { it.toSortedSet() == six || it.toSortedSet() ==  nine}[0].toSortedSet()
+    val six = zeroSixNine.filter { it.toList().intersect(one).size == 1 }[0].toSet()
+    val nine = zeroSixNine.filter { it.toList().intersect(four).size == 4 }[0].toSet()
+    val zero = zeroSixNine.filterNot { it.toSet() == six || it.toSet() ==  nine}[0].toSet()
 
 
-    val three = twoThreeFive.filter { it.toSortedSet().intersect(seven).size == 3 }[0].toSortedSet()
-    val five = twoThreeFive.filter { (it.toSortedSet().intersect(four).size == 3) && it.toSortedSet() != three }[0].toSortedSet()
-    val two = twoThreeFive.filterNot { it.toSortedSet() == three || it.toSortedSet() == five }[0].toSortedSet()
+    val three = twoThreeFive.filter { it.toSet().intersect(seven).size == 3 }[0].toSet()
+    val five = twoThreeFive.filter { (it.toSet().intersect(four).size == 3) && it.toSet() != three }[0].toSet()
+    val two = twoThreeFive.filterNot { it.toSet() == three || it.toSet() == five }[0].toSet()
 
     var sum = output.map {
         when (it.length) {
@@ -55,13 +55,13 @@ fun determineNumber(input: String): Int {
             4 -> 4
             3 -> 7
             7 -> 8
-            5 -> when (it.toSortedSet()) {
+            5 -> when (it.toSet()) {
                 two -> 2
                 three -> 3
                 five -> 5
                 else -> -1
             }
-            6 -> when (it.toSortedSet()) {
+            6 -> when (it.toSet()) {
                 zero -> 0
                 six -> 6
                 nine -> 9
