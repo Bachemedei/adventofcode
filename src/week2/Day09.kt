@@ -4,7 +4,7 @@ fun main() {
         input.forEach { row ->
             heightMap.add(row.map { it.digitToInt() }) }
 
-        val map = Graph(heightMap[0].lastIndex, heightMap.lastIndex, heightMap)
+        val map = Graph1(heightMap[0].lastIndex, heightMap.lastIndex, heightMap)
 
         val lowPoints = map.lowPoints
         val basins = mutableListOf<Int>()
@@ -30,7 +30,7 @@ fun main() {
     println("Part 2 answer: ${answer[1]}")
 }
 
-data class Graph(val length: Int, val height: Int, val labels: List<List<Int>>) {
+data class Graph1(val length: Int, val height: Int, val labels: List<List<Int>>) {
     data class Node(val x: Int, val y: Int, var label: Int)
 
     private val allNodes = mutableListOf<Node>()
@@ -87,16 +87,16 @@ data class Graph(val length: Int, val height: Int, val labels: List<List<Int>>) 
     }
 }
 
-fun breadthFirstSearch(graph: Graph, start: Graph.Node): HashMap<Graph.Node, Boolean> {
-    val queue = ArrayDeque<Graph.Node>()
+fun breadthFirstSearch(graph1: Graph1, start: Graph1.Node): HashMap<Graph1.Node, Boolean> {
+    val queue = ArrayDeque<Graph1.Node>()
     queue.addLast(start)
 
-    val reached = HashMap<Graph.Node, Boolean>()
+    val reached = HashMap<Graph1.Node, Boolean>()
     reached[start] = true
 
     while (queue.isNotEmpty()) {
         val currentLocation = queue.removeFirst()
-        val neighbours = graph.getNeighbours(currentLocation) ?: emptyList()
+        val neighbours = graph1.getNeighbours(currentLocation) ?: emptyList()
         for (node in neighbours) {
             if (!reached.containsKey(node)) {
                 queue.addLast(node)
